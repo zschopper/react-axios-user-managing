@@ -18,27 +18,29 @@ export default function UserList(props) {
   });
 
   useEffect(() => {
-    setLoading(true);
+    setLoading(true); // bekapcsoljuk a homokórát
     ds.getData("users", (status, response) => {
-      console.log(status, response);
       if (status === 200) {
-        setError("");
-        setUsers(response);
+        setError(""); // kitöröljük a hibát
+        setUsers(response); // beállítjuk a users állapotát a válaszban kapott listával
       } else {
-        setUsers([]);
-        setError(response.message);
+        setUsers([]); // kiürítjük a felhasználólistát
+        setError(response.message); // beállíjuk a hiba állapotát
       }
-      setLoading(false);
+      setLoading(false); // kikapcsoljuk a homokórát
     });
-  }, [ds]);
+  }, [ds]); // a ds itt függőség (a useEffect használja), de nem változik az értéke soha
 
+  // nincs használatban
   const UserIndexEvent = () => {
-    console.log("UserIndexEvent");
+    // console.log("UserIndexEvent");
   };
 
-  // megnyitja a formot, betölti egy új felhasználót szerkesztésre
+  // Megnyitja a formot, betölti egy új felhasználót szerkesztésre.
+  // A saveEvent azért kell, mert átadunk egy függvényt, aminek le kell futnia,
+  //   amikor a mentés gombra kattintanak a formon.
   const UserCreateEvent = (user, saveEvent) => {
-    console.log("UserCreateEvent", user, saveEvent);
+    // console.log("UserCreateEvent", user, saveEvent);
     setModalState({
       user: {},
       readOnly: false,
@@ -48,9 +50,9 @@ export default function UserList(props) {
     });
   };
 
-  // megnyitja a formot, betölti a felhasználót megtekintésre
+  // Megnyitja a formot, betölti a felhasználót megtekintésre.
   const UserShowEvent = (user) => {
-    console.log("UserShowEvent", user);
+    // console.log("UserShowEvent", user);
     setModalState({
       user: user,
       readOnly: true,
@@ -60,7 +62,9 @@ export default function UserList(props) {
     });
   };
 
-  // megnyitja a formot, betölti a felhasználót szerkesztésre
+  // Megnyitja a formot, betölti a felhasználót szerkesztésre.
+  // A saveEvent azért kell, mert átadunk egy függvényt, aminek le kell futnia,
+  //   amikor a mentés gombra kattintanak a formon.
   const UserEditEvent = (user, saveEvent) => {
     console.log("UserEditEvent", user, saveEvent);
     setModalState({
@@ -72,56 +76,56 @@ export default function UserList(props) {
     });
   };
 
-  // elküldi az új felhasználót a szervernek
+  // Elküldi az új felhasználót a szervernek.
   const UserStoreEvent = (user) => {
-    console.log("UserStoreEvent", user);
-      setLoading(true);
-      ds.postData("users", user, (status, response) => {
-        console.log(status, response);
-        if (status >= 200 && status <= 299) {
-          setError("");
-          setUsers([...users, response]);
-        } else {
-          setError(response.message);
-        }
-        setLoading(false);
-      });
+    // console.log("UserStoreEvent", user);
+    setLoading(true);
+    ds.postData("users", user, (status, response) => {
+      console.log(status, response);
+      if (status >= 200 && status <= 299) {
+        setError("");
+        setUsers([...users, response]);
+      } else {
+        setError(response.message);
+      }
+      setLoading(false);
+    });
   };
 
   console.log(users);
 
-  // elküldi a létező felhasználót a szervernek
+  // Elküldi a létező felhasználót a szervernek.
   const UserUpdateEvent = (user) => {
-    console.log("UserUpdateEvent", user);
+    // console.log("UserUpdateEvent", user);
     setLoading(true);
-    ds.putData( `users/${user.id}`, user, (status, response) => {
+    ds.putData(`users/${user.id}`, user, (status, response) => {
       console.log(status, response);
       if (status >= 200 && status <= 299) {
         setError("");
-        const idx = users.findIndex((u) => user.id === response.id);
-        const newUsers = [...users];
-        newUsers[idx] = response;
-        setUsers(newUsers);
+        const idx = users.findIndex((u) => user.id === response.id); // megkeressük a módosított felhasználó indexét a users-ben
+        const newUsers = [...users]; // lemásoljuk a users-t
+        newUsers[idx] = response; // kicseréljük a módosított usert az újra.
+        setUsers(newUsers); // újrarenderelünk
       } else {
         setError(response.message);
       }
       setLoading(false);
     });
-
   };
 
-  // törli a felhasználót
+  // Törli a felhasználót.
+  // Kellene ide egy megerősítés is a kérés kiküldése előtt.
   const UserDeleteEvent = (user) => {
-    console.log("UserDeleteEvent", user);
+    // console.log("UserDeleteEvent", user);
     setLoading(true);
-    ds.deleteData( `users/${user.id}`, (status, response) => {
+    ds.deleteData(`users/${user.id}`, (status, response) => {
       console.log(status, response);
       if (status >= 200 && status <= 299) {
         setError("");
-        const idx = users.findIndex((u) => user.id === u.id);
-        const newUsers = [...users];
-        newUsers.splice(idx, 1);
-        setUsers(newUsers);
+        const idx = users.findIndex((u) => user.id === u.id); // megkeressük a törölt felhasználót
+        const newUsers = [...users]; // lemásoljuk a users-t
+        newUsers.splice(idx, 1); // kitöröljük a törölt felhasználót
+        setUsers(newUsers); // újrarenderelelés
       } else {
         setError(response.message);
       }
@@ -129,6 +133,8 @@ export default function UserList(props) {
     });
   };
 
+  // Egy objektumba összegyűjtöttük a függvényeket, amiket a lista hívhat, egy tulajdonságként tudjuk így küldeni a props-nak.
+  // A függvények referenciáit használjuk, nem hívjuk őket!
   let events = {
     index: UserIndexEvent,
     create: UserCreateEvent,
@@ -142,12 +148,14 @@ export default function UserList(props) {
   return (
     <article>
       <h2>Felhasználó lista</h2>
+      {/* az onClick-ben a fenti events objektum create-jét hívjuk */}
       <Button variant="primary" onClick={() => events.create()}>
         Új felhasználó
       </Button>
+      {/* feltétel && ... módon lehet feltételhez kötni a renderelést. Itt: ha van hiba, megjelenik az értesítési sáv. */}
       {error && <Alert variant={"danger"}>{error}</Alert>}
       <Spinner shown={loading} />
-      <Table dataService={props.dataService} events={events} users={users} />
+      <Table events={events} users={users} />
       {modalState && <UserModal state={modalState} setState={setModalState} />}
     </article>
   );
@@ -157,12 +165,10 @@ function Table(props) {
   return (
     <table className="table">
       <TableHead
-        dataService={props.dataService}
         events={props.events}
         users={props.users}
       />
       <TableBody
-        dataService={props.dataService}
         events={props.events}
         users={props.users}
       />
@@ -189,7 +195,6 @@ function TableBody(props) {
       {props?.users?.map((u, i) => (
         <TableRow
           key={i}
-          dataService={props.dataService}
           events={props.events}
           user={u}
         />
@@ -208,13 +213,15 @@ function TableRow(props) {
           onClick={() => {
             props.events.show(user);
           }}
-        ></i>&nbsp;
+        ></i>
+        &nbsp;
         <i
           className="fa-regular fa-user-pen"
           onClick={() => {
             props.events.edit(user, props.events.update);
           }}
-        ></i>&nbsp;
+        ></i>
+        &nbsp;
         <i
           className="fa-regular fa-user-minus"
           onClick={() => {

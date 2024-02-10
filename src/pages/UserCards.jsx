@@ -38,7 +38,7 @@ function UserCard(prop) {
   let user = prop.user;
   return (
     <div className="col-sm-3">
-      <div className="card">
+      <div className="card shadow-sm">
         <div className="card-body">
           <img
             src={`https://i.pravatar.cc/300?img=` + user.id}
@@ -62,7 +62,6 @@ function UserCard(prop) {
               </div>
             </div>
           </div>
-          <button className="btn btn-primary">Kiválaszt</button>
         </div>
       </div>
     </div>

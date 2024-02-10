@@ -1,3 +1,38 @@
+body {
+  background-color: bisque;
+}
+
+div#root>div.container {
+  margin-top: 20px;
+  padding: 20px inherited;
+  background-color: #ecdecb;
+  border: 2px solid #a3793b;
+}
+
+nav.navbar {
+  background-color: #ac2c0c;
+}
+
+nav.navbar a {
+  color: #f8dfdf;
+  font-weight: bold;
+  font-family: Nunito;
+  font-size: 140%;
+  letter-spacing: 210%;
+  font-variant: small-caps;
+}
+
+nav.navbar a:hover {
+  color: #f1dd6c;
+  -webkit-transition: all 1s ease;
+  transition: all 1s ease;
+}
+
+nav.navbar li.nav-item:hover {
+  background-color: #af6300;
+  -webkit-transition: all 1s ease;
+  transition: all 1s ease;
+}
 
 #overlay {
   display: none;
@@ -27,6 +62,11 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
