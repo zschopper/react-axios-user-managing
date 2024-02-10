@@ -81,7 +81,7 @@ function UserModal({ state, setState }) {
               />
             </Form.Group>
 
-            {/* <Form.Group className="mb-3" controlId="formBasicGender">
+              <Form.Group className="mb-3" controlId="formBasicGender">
               <Form.Label>Nem</Form.Label>
               <Form.Check
                 type="radio"
@@ -176,7 +176,7 @@ function UserModal({ state, setState }) {
                 onChange={handleChange}
                 name="postcode"
               />
-            </Form.Group>*/}
+            </Form.Group>
           </Form>{" "}
         </Modal.Body>
         <Modal.Footer>

@@ -1,7 +1,6 @@
 import Alert from "react-bootstrap/Alert";
-import Button from "react-bootstrap/Alert";
+import Button from "react-bootstrap/Button";
 import { useEffect, useState } from "react";
-// import { Spinner } from "../components/Spinner.jsx";
 import UserModal from "./UserModal.jsx";
 import Spinner from "../components/Spinner.jsx";
 
@@ -9,13 +8,13 @@ export default function UserList(props) {
   let ds = props.dataService;
   const [users, setUsers] = useState([]);
   const [error, setError] = useState("");
-  // const [activeUser, setActiveUser] = useState(-1);
   const [loading, setLoading] = useState(false);
   const [modalState, setModalState] = useState({
     user: {},
     readOnly: false,
     visible: false,
     saveEvent: null,
+    messages: [],
   });
 
   useEffect(() => {
@@ -45,7 +44,8 @@ export default function UserList(props) {
       readOnly: false,
       visible: true,
       saveEvent: UserStoreEvent,
-    })
+      messages: [],
+    });
   };
 
   // megnyitja a formot, betölti a felhasználót megtekintésre
@@ -56,7 +56,8 @@ export default function UserList(props) {
       readOnly: true,
       visible: true,
       saveEvent: null,
-    })
+      messages: [],
+    });
   };
 
   // megnyitja a formot, betölti a felhasználót szerkesztésre
@@ -67,22 +68,65 @@ export default function UserList(props) {
       readOnly: false,
       visible: true,
       saveEvent: UserUpdateEvent,
-    })
+      messages: [],
+    });
   };
 
   // elküldi az új felhasználót a szervernek
-  const UserStoreEvent = () => {
-    console.log("UserStoreEvent");
+  const UserStoreEvent = (user) => {
+    console.log("UserStoreEvent", user);
+      setLoading(true);
+      ds.postData("users", user, (status, response) => {
+        console.log(status, response);
+        if (status >= 200 && status <= 299) {
+          setError("");
+          setUsers([...users, response]);
+        } else {
+          setError(response.message);
+        }
+        setLoading(false);
+      });
   };
+
+  console.log(users);
 
   // elküldi a létező felhasználót a szervernek
   const UserUpdateEvent = (user) => {
     console.log("UserUpdateEvent", user);
+    setLoading(true);
+    ds.putData( `users/${user.id}`, user, (status, response) => {
+      console.log(status, response);
+      if (status >= 200 && status <= 299) {
+        setError("");
+        const idx = users.findIndex((u) => user.id === response.id);
+        const newUsers = [...users];
+        newUsers[idx] = response;
+        setUsers(newUsers);
+      } else {
+        setError(response.message);
+      }
+      setLoading(false);
+    });
+
   };
 
   // törli a felhasználót
   const UserDeleteEvent = (user) => {
     console.log("UserDeleteEvent", user);
+    setLoading(true);
+    ds.deleteData( `users/${user.id}`, (status, response) => {
+      console.log(status, response);
+      if (status >= 200 && status <= 299) {
+        setError("");
+        const idx = users.findIndex((u) => user.id === u.id);
+        const newUsers = [...users];
+        newUsers.splice(idx, 1);
+        setUsers(newUsers);
+      } else {
+        setError(response.message);
+      }
+      setLoading(false);
+    });
   };
 
   let events = {
@@ -164,13 +208,13 @@ function TableRow(props) {
           onClick={() => {
             props.events.show(user);
           }}
-        ></i>
+        ></i>&nbsp;
         <i
           className="fa-regular fa-user-pen"
           onClick={() => {
             props.events.edit(user, props.events.update);
           }}
-        ></i>
+        ></i>&nbsp;
         <i
           className="fa-regular fa-user-minus"
           onClick={() => {

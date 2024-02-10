@@ -13,9 +13,9 @@ export default class DataService {
       .catch(function (error) {
         let errorResponse = '';
         if (error?.isAxiosError) {
-          errorResponse = {message: error.message};
+          errorResponse = { message: error.message };
         } else {
-          errorResponse = {message: error.response.message};
+          errorResponse = { message: error.response.message };
         }
 
         callback(error.response?.status, errorResponse);
@@ -35,9 +35,22 @@ export default class DataService {
       .finally(function () { });
   }
 
-  deleteData(endpoint, id, callback) {
+  putData(endpoint, data, callback) {
     axios
-      .delete(endpoint + "/" + id)
+      .put(endpoint, data)
+      .then(function (response) {
+        callback(response.status, response.data);
+      })
+      .catch(function (error) {
+        callback(error.response.status, error.response.data);
+      })
+      .finally(function () { });
+  }
+
+
+  deleteData(endpoint, callback) {
+    axios
+      .delete(endpoint)
       .then(function (response) {
         callback(response.status, response.data);
       })

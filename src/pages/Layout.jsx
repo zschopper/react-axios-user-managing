@@ -14,10 +14,10 @@ const Layout = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <Link className="nav-link" to="/">Felhasználói kártyák</Link>
+              <Link className="nav-link" to="/">Kártyák</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/user-list">Felhasználó Lista</Link>
+              <Link className="nav-link" to="/user-list">Lista</Link>
             </li>
           </ul>
         </div>
