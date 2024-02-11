@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 
 function UserModal({ state, setState }) {
   // user, readOnly, visible, setShow, onSave
-  const [formData, setFormData] = useState({...state.user});
+  const [formData, setFormData] = useState({ ...state.user });
 
   // const [dob, setDob] = useState(new Date());
   console.log(state);
@@ -32,11 +32,10 @@ function UserModal({ state, setState }) {
   // Handle form input changes
   const handleChange = (event) => {
     console.log("handleChange", formData);
-      setFormData({
+    setFormData({
       ...formData,
       [event.target.name]: event.target.value,
     });
-
   };
 
   const title = formData.id
@@ -58,13 +57,17 @@ function UserModal({ state, setState }) {
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={() => {console.log("submit!")}}>
+          <Form
+            onSubmit={() => {
+              console.log("submit!");
+            }}
+          >
             <Form.Group className="mb-3" controlId="formBasicName">
               <Form.Label>Név</Form.Label>
               <Form.Control
                 type="text"
                 {...(state?.readOnly ? { readOnly: true } : {})}
-                value={formData.name || ''}
+                value={formData.name || ""}
                 onChange={handleChange}
                 name="name"
               />
@@ -75,13 +78,13 @@ function UserModal({ state, setState }) {
               <Form.Control
                 type="text"
                 {...(state?.readOnly ? { readOnly: true } : {})}
-                value={formData.email || ''}
+                value={formData.email || ""}
                 onChange={handleChange}
                 name="email"
               />
             </Form.Group>
 
-              <Form.Group className="mb-3" controlId="formBasicGender">
+            <Form.Group className="mb-3" controlId="formBasicGender">
               <Form.Label>Nem</Form.Label>
               <Form.Check
                 type="radio"
@@ -117,7 +120,7 @@ function UserModal({ state, setState }) {
               <Form.Control
                 type="date"
                 {...(state?.readOnly ? { readOnly: true } : {})}
-                value={formData.dob || ''}
+                value={formData.dob || ""}
                 onChange={handleChange}
                 name="dob"
               />
@@ -128,7 +131,7 @@ function UserModal({ state, setState }) {
               <Form.Control
                 type="text"
                 {...(state?.readOnly ? { readOnly: true } : {})}
-                value={formData.country || ''}
+                value={formData.country || ""}
                 onChange={handleChange}
                 name="country"
               />
@@ -139,7 +142,7 @@ function UserModal({ state, setState }) {
               <Form.Control
                 type="text"
                 {...(state?.readOnly ? { readOnly: true } : {})}
-                value={formData.city || ''}
+                value={formData.city || ""}
                 onChange={handleChange}
                 name="city"
               />
@@ -150,7 +153,7 @@ function UserModal({ state, setState }) {
               <Form.Control
                 type="text"
                 {...(state?.readOnly ? { readOnly: true } : {})}
-                value={formData.address1 || ''}
+                value={formData.address1 || ""}
                 onChange={handleChange}
                 name="address1"
               />
@@ -161,7 +164,7 @@ function UserModal({ state, setState }) {
               <Form.Control
                 type="text"
                 {...(state?.readOnly ? { readOnly: true } : {})}
-                value={formData.address2 || ''}
+                value={formData.address2 || ""}
                 onChange={handleChange}
                 name="address2"
               />
@@ -172,7 +175,7 @@ function UserModal({ state, setState }) {
               <Form.Control
                 type="text"
                 {...(state?.readOnly ? { readOnly: true } : {})}
-                value={formData.postcode || ''}
+                value={formData.postcode || ""}
                 onChange={handleChange}
                 name="postcode"
               />

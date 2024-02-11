@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 
 export default function UserCards(props) {
   let ds = props.dataService;
-  const [users, setUsers] = useState([]);
-  const [error, setError] = useState("");
+  const [users, setUsers] = useState([]); // felh. lista
+  const [error, setError] = useState(""); // hibaüzenet
 
   useEffect(() => {
     ds.getData("users", (status, response) => {
@@ -25,8 +25,8 @@ export default function UserCards(props) {
 
       {error && <Alert variant={"danger"}>{error}</Alert>}
 
-      <div className="row gap-2">
-        {users && users?.map((u, i) => (
+      <div className="row d-grid gap-2">
+        {users?.map((u, i) => (
           <UserCard key={i} user={u} />
         ))}
       </div>
